@@ -1,0 +1,54 @@
+【1】
+用 document.readyState == "complete" 判断页面是否加载完成
+
+document.readyState=="complete"
+
+if ( document.readyState=="complete" ) {
+    $("#mobile_minchat_div").css("display","none");
+}
+//
+function aLoad () {
+
+        if(document.readyState == "complete"){ //当页面加载状态为完全结束时进入
+            $("#mobile_minchat_div").css("display","none");
+        }
+
+
+}
+【2】
+$(function(){
+//					$(".adv_iframe").load(function(){
+//						//$(this).height($(this).contents().find("#pageContent").height());
+//						var height = $(this).contents().find("body").height() + 40;
+//						$(this).height( height < 400 ? 400 : height );
+//					});
+//				});
+【3】跨域问题
+
+
+$.ajax({
+      type: "get",
+      async: false,
+      //url: obj.url,
+      url:obj.url+"cid/"+obj.cid+"/pid/"+obj.pid+"/sourceurl/"+obj.sourceurl+"/tel/"+obj.tel,
+      dataType: "jsonp",
+      jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+      jsonpCallback:"flightHandler",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
+      success: function(data){
+        console.log(data);
+        if (data.errorCode == 0) {//成功
+
+          obj._this.html("连接成功");
+
+        } else if (data.errorCode == 1) {
+          //恢复按钮
+          statusFun (obj._this,"normal");
+          //
+          obj.eleMsg.html(data.data.message).css("color","red");
+        }
+      },
+      error: function(){
+        alert('fail');
+      }
+    });
+

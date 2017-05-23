@@ -1,0 +1,38 @@
+var state = { 'page_id': 1, 'user_id': 5 };
+var title = 'Hello World';
+var url = 'hello-world.html';
+
+history.pushState(state, title, url);
+
+
+
+///示例
+window.onpopstate = function(event) {
+  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+};
+history.pushState({page: 1}, "title 1", "?page=1");
+history.pushState({page: 2}, "title 2", "?page=2");
+history.replaceState({page: 3}, "title 3", "?page=3");
+history.back(); // alerts "location: http://example.com/example.html?page=1, state: {"page":1}"
+history.back(); // alerts "location: http://example.com/example.html, state: null
+history.go(2);  // alerts "location: http://example.com/example.html?page=3, state: {"page":3}
+
+
+
+//initEvent
+初始化新事件对象的属性
+其实就是绑定事件。
+一旦创建了一个事件对象，就要初始化这个事件的相关信息，每一种类型的事件都有特定的方法来初始化，在创建完事件对象之后，
+通过dispatchEvent()方法来将事件应用到特定的dom节点上，以便其支持该事件。这个dispatchEvent()事件，支持一个参数，就是你创建的event对象。
+像Safari不支持非button元素的click事件，就要通过这个函数来派发click事件给元素以便支持
+function dispatch(el, type){
+ try{
+       var evt = document.createEvent('Event');
+        evt.initEvent(type,true,true);
+        el.dispatchEvent(evt);
+  }catch(e){
+       alert(e);
+  };
+}
+var btn1 = document.getElementById('btn1');
+dispatch(btn1, 'click');
